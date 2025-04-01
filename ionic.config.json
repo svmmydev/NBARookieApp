@@ -1,0 +1,7 @@
+{
+  "name": "NBARookieApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
