@@ -1,5 +1,7 @@
 <ion-header>
   <ion-toolbar>
+  </ion-toolbar>
+  <ion-toolbar>
     <ion-title>Login</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -7,13 +9,11 @@
 <ion-content>
   <form (ngSubmit)="onLogin()" [formGroup]="loginForm" class="ion-padding">
     <ion-item>
-      <ion-label position="floating">Email</ion-label>
-      <ion-input type="email" formControlName="email" fill="outline"></ion-input>
+      <ion-input label="Email:" label-placement="floating" formControlName="email"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" formControlName="password" fill="outline"></ion-input>
+      <ion-input label="Password:" label-placement="floating" type="password" formControlName="password"></ion-input>
     </ion-item>
 
     <ion-button expand="full" type="submit" [disabled]="loginForm.invalid">

@@ -15,7 +15,6 @@ import { IonContent, IonItem, IonLabel, IonInput, IonButton, IonHeader, IonToolb
     RouterModule,
     IonContent,
     IonItem,
-    IonLabel,
     IonInput,
     IonButton,
     IonHeader,
