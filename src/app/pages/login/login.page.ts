@@ -38,6 +38,7 @@ export class LoginPage implements OnInit {
   onLogin() {
     if (this.loginForm.valid) {
       const {email, password} = this.loginForm.value;
+      
       console.log('Login con:', email, password);
     }
   }
