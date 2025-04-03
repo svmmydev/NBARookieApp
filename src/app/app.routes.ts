@@ -8,7 +8,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'playerlist',
+    redirectTo: 'login',
     pathMatch: 'full',
   },
   {
@@ -17,7 +17,7 @@ export const routes: Routes = [
   },
   {
     path: 'playerlist',
-    loadComponent: () => import('./pages/playerlist/playerlist.page').then( m => m.PlayerlistPage)
+    loadComponent: () => import('./pages/playerlist/playerlist.page').then( m => m.Playerlist)
   },
 
 ];
