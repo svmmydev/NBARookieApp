@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 
-interface User {
+export interface User {
   name: string;
   email: string;
   password: string;
@@ -19,7 +19,7 @@ export class AuthService {
     const savedUser = localStorage.getItem('loggedUser');
     if (savedUser) this.currentUser$.next(JSON.parse(savedUser));
 
-    const savedUsers = localStorage.getItem('registeredUser');
+    const savedUsers = localStorage.getItem('registeredUsers');
     if (savedUsers) this.users = JSON.parse(savedUsers);
   }
 
