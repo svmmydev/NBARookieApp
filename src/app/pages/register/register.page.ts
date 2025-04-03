@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
@@ -24,9 +24,16 @@ import { AuthService, User } from 'src/app/services/auth.service';
   ]
 })
 export class RegisterPage implements OnInit {
+  private auth = inject(AuthService);
+  private router = inject(Router);
+  private fb = inject(FormBuilder);
+
+
   registerForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
+
+  constructor() {}
+
 
   ngOnInit() {
     this.registerForm = this.fb.group({
@@ -36,6 +43,7 @@ export class RegisterPage implements OnInit {
       confirmPassword: ['', Validators.required]
     });
   }
+
 
   onRegister() {
     if (this.registerForm.valid) {
@@ -48,7 +56,7 @@ export class RegisterPage implements OnInit {
       
       const user: User = {name, email, password};
 
-      this.authService.register(user).subscribe(success => {
+      this.auth.register(user).subscribe(success => {
         if (success) {
           alert('Registro correcto. Ahora puedes iniciar sesión.');
           console.log('Registro:', name, email, password);
