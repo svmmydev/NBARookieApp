@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { IonContent, IonItem, IonLabel, IonInput, IonButton, IonHeader, IonToolbar, IonTitle} from '@ionic/angular/standalone';
+import { Router, RouterModule } from '@angular/router';
+import { IonContent, IonItem, IonInput, IonButton, IonHeader, IonToolbar, IonTitle} from '@ionic/angular/standalone';
+import { AuthService, User } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -25,7 +26,7 @@ import { IonContent, IonItem, IonLabel, IonInput, IonButton, IonHeader, IonToolb
 export class RegisterPage implements OnInit {
   registerForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.registerForm = this.fb.group({
@@ -38,15 +39,24 @@ export class RegisterPage implements OnInit {
 
   onRegister() {
     if (this.registerForm.valid) {
-      const { name, email, password, confirmPassword } = this.registerForm.value;
+      const {name, email, password, confirmPassword} = this.registerForm.value;
 
       if (password !== confirmPassword) {
         alert('Las contraseñas no coinciden');
         return;
       }
+      
+      const user: User = {name, email, password};
 
-      console.log('Registro:', name, email, password);
-      // Aquí puedes llamar a tu AuthService o guardar en localStorage
+      this.authService.register(user).subscribe(success => {
+        if (success) {
+          alert('Registro correcto. Ahora puedes iniciar sesión.');
+          console.log('Registro:', name, email, password);
+          this.router.navigateByUrl('/login');
+        } else {
+          alert('El usuario ya existe.');
+        }
+      });
     }
   }
 }
