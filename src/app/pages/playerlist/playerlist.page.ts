@@ -1,19 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonButton } from '@ionic/angular/standalone';
-import { PlayerListComponent } from 'src/app/components/playerlist/playerlist.component';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonButton, IonList, IonLabel, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonIcon, IonButtons } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { camera, shareSocial } from 'ionicons/icons';
 
 @Component({
-  selector: 'app-playerlist-page',
+  selector: 'app-playerlist',
   templateUrl: './playerlist.page.html',
   styleUrls: ['./playerlist.page.scss'],
   standalone: true,
-  imports: [IonButton, IonItem, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, PlayerListComponent]
+  imports: [IonButtons, IonIcon, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard, IonLabel, IonList, IonButton, IonItem, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
-export class PlayerlistPage implements OnInit {
+export class Playerlist implements OnInit {
 
-  constructor() { }
+  constructor() {
+      addIcons({camera,shareSocial});
+  }
 
   ngOnInit() {
     
