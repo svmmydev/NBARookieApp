@@ -44,8 +44,9 @@ export class LoginPage implements OnInit {
       const {email, password} = this.loginForm.value;
 
       this.authService.login(email, password).subscribe(success => {
+        console.log('¿Login exitoso?', success);
         if (success) {
-          this.router.navigateByUrl('/dashboard');
+          this.router.navigateByUrl('/playerlist');
           console.log('Login con:', email, password);
         } else {
           alert('Email o contraseña incorrectos');
