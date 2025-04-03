@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonItem, IonLabel, IonList, IonContent } from '@ionic/angular/standalone';
 
 @Component({
@@ -7,7 +7,10 @@ import { IonItem, IonLabel, IonList, IonContent } from '@ionic/angular/standalon
   styleUrls: ['./playerlist.component.scss'],
   imports: [IonContent, IonItem, IonLabel, IonList],
 })
-export class PlayerListComponent {
-  players = ['esto', 'es', 'una', 'lista', 'dummy'];
+export class PlayerListComponent implements OnInit {
+
+  ngOnInit(): void {
+    
+  }
 
 }
