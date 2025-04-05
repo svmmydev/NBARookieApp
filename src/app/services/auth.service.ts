@@ -11,10 +11,10 @@ export interface User {
   providedIn: 'root'
 })
 export class AuthService {
+
   private users: User[] = [];
   private currentUser$ = new BehaviorSubject<User | null>(null);
   
-
   constructor() { 
     const savedUser = localStorage.getItem('loggedUser');
     if (savedUser) this.currentUser$.next(JSON.parse(savedUser));
@@ -22,7 +22,6 @@ export class AuthService {
     const savedUsers = localStorage.getItem('registeredUsers');
     if (savedUsers) this.users = JSON.parse(savedUsers);
   }
-
 
   register(user: User): Observable<boolean> {
     const exists = this.users.find(u => u.email === user.email);
@@ -33,7 +32,6 @@ export class AuthService {
     return of(true);
   }
 
-
   login(email: string, password: string): Observable<boolean> {
     const user = this.users.find(u => u.email === email && u.password === password);
     if (!user) return of(false);
@@ -43,12 +41,10 @@ export class AuthService {
     return of(true);
   }
 
-
   logout(): void {
     localStorage.removeItem('loggedUser');
     this.currentUser$.next(null);
   }
-
 
   isLoggedIn(): boolean {
     return this.currentUser$.value !== null;

@@ -1,7 +1,6 @@
 export interface Player {
     id: number;
     name: string;
-    firstName: string;
     surName: string;
     height: string;
     weight: string;
