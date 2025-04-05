@@ -13,8 +13,8 @@
 
 <ion-content>
   <ion-list>
-    @for (player of players; track player.id) {
-      <ion-card>
+    @for (player of apiService.players; track player.id) {
+      <ion-card (click)="goToDetails(player.id)">
         <ion-card-header>
           <div class="card-header-content">
             <div>

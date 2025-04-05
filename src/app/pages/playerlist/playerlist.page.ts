@@ -19,6 +19,7 @@ import { IonContent,
   IonInfiniteScrollContent
 } from '@ionic/angular/standalone';
 import { Player } from 'src/app/models/player.model';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-playerlist',
@@ -43,11 +44,10 @@ import { Player } from 'src/app/models/player.model';
     IonInfiniteScrollContent]
 })
 export class Playerlist implements OnInit {
-  players: Player[] = [];
   cursor:number | null = null;
   perPage= 25;
 
-  constructor(public apiService: ApiService) { }
+  constructor(public apiService: ApiService, private router: Router) { }
 
   ngOnInit() {
     this.loadPlayers();
@@ -56,7 +56,7 @@ export class Playerlist implements OnInit {
   loadPlayers(event?: CustomEvent) {
     this.apiService.getPlayers(this.cursor, this.perPage).subscribe({
       next: ({players, nextCursor}) => {
-        this.players = [...this.players, ...players];
+        this.apiService.players = [...this.apiService.players, ...players];
         this.cursor = nextCursor;
 
         if (event) {
@@ -73,5 +73,9 @@ export class Playerlist implements OnInit {
 
   loadMore(event: CustomEvent) {
     this.loadPlayers(event);
+  }
+
+  goToDetails(playerId: number) {
+    this.router.navigate(['/playerdetails', playerId]);
   }
 }

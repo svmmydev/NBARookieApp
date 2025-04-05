@@ -8,6 +8,8 @@ import { mapApiPlayerToPlayer } from '../mappers/player.mapper';
   providedIn: 'root'
 })
 export class ApiService {
+  players: Player[] = [];
+  
   readonly API_URL = 'https://api.balldontlie.io/v1/players';
   readonly API_AUTH_TOKEN = '1b4f8895-a5dc-44a2-8e67-17b56727328f';
   
