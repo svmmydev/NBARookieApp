@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-  standalone: true,
   imports: [CommonModule,
     ReactiveFormsModule,
     RouterModule,
@@ -24,16 +23,14 @@ import { Router } from '@angular/router';
   ]
 })
 export class LoginPage implements OnInit {
+
   private auth = inject(AuthService)
   private router = inject(Router)
   private fb = inject(FormBuilder)
 
-  
   loginForm!: FormGroup;
 
-
   constructor() {}
-
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -42,7 +39,6 @@ export class LoginPage implements OnInit {
     });
     console.log(JSON.parse(localStorage.getItem('registeredUsers')!));
   }
-
 
   onLogin() {
     if (this.loginForm.valid) {
@@ -59,7 +55,6 @@ export class LoginPage implements OnInit {
       });
     }
   }
-
 
   resetApp() {
     localStorage.clear();
