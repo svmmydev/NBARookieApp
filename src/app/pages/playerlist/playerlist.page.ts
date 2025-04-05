@@ -1,22 +1,77 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonList, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonIcon, IonButtons } from '@ionic/angular/standalone';
+import { ApiService } from 'src/app/services/api.service';
+import { IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonButton,
+  IonList,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardContent,
+  IonIcon,
+  IonButtons,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent
+} from '@ionic/angular/standalone';
+import { Player } from 'src/app/models/player.model';
 
 @Component({
   selector: 'app-playerlist',
   templateUrl: './playerlist.page.html',
   styleUrls: ['./playerlist.page.scss'],
-  standalone: true,
-  imports: [IonButtons, IonIcon, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard, IonList, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonButtons,
+    IonIcon,
+    IonCardContent,
+    IonCardSubtitle,
+    IonCardTitle,
+    IonCardHeader,
+    IonCard,
+    IonList,
+    IonButton,
+    IonContent,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    CommonModule,
+    FormsModule,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent]
 })
 export class Playerlist implements OnInit {
+  players: Player[] = [];
+  cursor:number | null = null;
+  perPage= 25;
 
-  constructor() {
-  }
+  constructor(public apiService: ApiService) { }
 
   ngOnInit() {
-    
+    this.loadPlayers();
   }
 
+  loadPlayers(event?: CustomEvent) {
+    this.apiService.getPlayers(this.cursor, this.perPage).subscribe({
+      next: ({players, nextCursor}) => {
+        this.players = [...this.players, ...players];
+        this.cursor = nextCursor;
+
+        if (event) {
+          const infiniteScroll = event.target as HTMLIonInfiniteScrollElement;
+          infiniteScroll.complete();
+          if (!nextCursor) infiniteScroll.disabled = true;
+        }
+      },
+      error: (e) => {
+        console.log(e);
+      }
+    });
+  }
+
+  loadMore(event: CustomEvent) {
+    this.loadPlayers(event);
+  }
 }
