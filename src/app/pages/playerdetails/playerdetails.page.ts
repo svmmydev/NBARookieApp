@@ -7,15 +7,12 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonButtons, IonBu
   selector: 'app-playerdetails',
   templateUrl: './playerdetails.page.html',
   styleUrls: ['./playerdetails.page.scss'],
-  standalone: true,
-  imports: [IonCardSubtitle, IonItem, IonCardTitle, IonCardHeader, IonList, IonIcon, IonButton, IonButtons, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonCardSubtitle, IonCardTitle, IonCardHeader, IonIcon, IonButton, IonButtons, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
 export class PlayerdetailsPage implements OnInit {
 
-  constructor() {
-  }
+  constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
 }
