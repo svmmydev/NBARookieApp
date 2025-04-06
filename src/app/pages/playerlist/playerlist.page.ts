@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 import { IonContent,
   IonHeader,
   IonTitle,
@@ -18,8 +20,6 @@ import { IonContent,
   IonInfiniteScroll,
   IonInfiniteScrollContent
 } from '@ionic/angular/standalone';
-import { Player } from 'src/app/models/player.model';
-import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-playerlist',
@@ -47,7 +47,11 @@ export class Playerlist implements OnInit {
   cursor:number | null = null;
   perPage= 25;
 
-  constructor(public apiService: ApiService, private router: Router) { }
+  constructor(
+    public apiService: ApiService,
+    private router: Router,
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
     this.loadPlayers();
@@ -77,5 +81,10 @@ export class Playerlist implements OnInit {
 
   goToDetails(playerId: number) {
     this.router.navigate(['/playerdetails', playerId]);
+  }
+
+  logOut(): void {
+    this.authService.logOut();
+    this.router.navigateByUrl('/login');
   }
 }

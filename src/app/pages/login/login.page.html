@@ -7,22 +7,26 @@
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="onLogin()" [formGroup]="loginForm" class="ion-padding">
+  <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="ion-padding">
     <ion-item>
       <ion-input label="Email:" label-placement="floating" formControlName="email"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input label="Password:" label-placement="floating" type="password" formControlName="password"></ion-input>
+      <ion-input type="password" label="Password:" label-placement="floating" formControlName="password"></ion-input>
     </ion-item>
 
-    <ion-button expand="full" type="submit" [disabled]="loginForm.invalid" class="ion-padding">
+    <ion-button expand="full" type="submit" class="ion-padding">
       Iniciar sesión
     </ion-button>
+
+    @if (errorMessage) {
+      <div>{{ errorMessage }}</div>
+    }
+
     <p class="ion-text-center ion-padding">
       ¿No tienes cuenta?
       <a routerLink="/register">Regístrate</a>
-      <a (click)="resetApp()" class="ion-padding">Limpiar usuarios</a>
     </p>
   </form>
 </ion-content>
