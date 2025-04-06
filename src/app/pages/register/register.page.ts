@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { IonContent, IonItem, IonInput, IonButton, IonHeader, IonToolbar, IonTitle} from '@ionic/angular/standalone';
-import { AuthService, User } from 'src/app/services/auth.service';
+import { HttpClient } from '@angular/common/http';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -22,48 +23,33 @@ import { AuthService, User } from 'src/app/services/auth.service';
     IonTitle
   ]
 })
-export class RegisterPage implements OnInit {
-  private auth = inject(AuthService);
-  private router = inject(Router);
-  private fb = inject(FormBuilder);
+export class RegisterPage {
 
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
-  registerForm!: FormGroup;
+  registerForm = this.fb.nonNullable.group({
+    userName: ['', Validators.required],
+    email: ['', Validators.required],
+    password: ['', Validators.required]
+  });
 
-
-  constructor() {}
-
-
-  ngOnInit() {
-    this.registerForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', Validators.required]
-    });
-  }
-
+  errorMessage: string | null = null;
 
   onRegister() {
-    if (this.registerForm.valid) {
-      const {name, email, password, confirmPassword} = this.registerForm.value;
-
-      if (password !== confirmPassword) {
-        alert('Las contraseñas no coinciden');
-        return;
+    const form = this.registerForm.getRawValue();
+    this.authService.register(form.email, form.userName, form.password).
+    subscribe({
+      next: () => {
+        this.router.navigateByUrl('/');
+      },
+      error: (err) => {
+        this.errorMessage = err.code;
       }
-      
-      const user: User = {name, email, password};
-
-      this.auth.register(user).subscribe(success => {
-        if (success) {
-          alert('Registro correcto. Ahora puedes iniciar sesión.');
-          console.log('Registro:', name, email, password);
-          this.router.navigateByUrl('/login');
-        } else {
-          alert('El usuario ya existe.');
-        }
-      });
-    }
+    });
   }
 }
