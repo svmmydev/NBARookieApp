@@ -1,10 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import { IonContent, IonItem, IonInput, IonButton, IonHeader, IonToolbar, IonTitle} from '@ionic/angular/standalone';
 import { RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -22,42 +23,31 @@ import { Router } from '@angular/router';
     IonTitle
   ]
 })
-export class LoginPage implements OnInit {
+export class LoginPage {
 
-  private auth = inject(AuthService)
-  private router = inject(Router)
-  private fb = inject(FormBuilder)
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
-  loginForm!: FormGroup;
+  loginForm = this.fb.nonNullable.group({
+    email: ['', Validators.required],
+    password: ['', Validators.required]
+  })
 
-  constructor() {}
-
-  ngOnInit() {
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
-    });
-    console.log(JSON.parse(localStorage.getItem('registeredUsers')!));
-  }
+  errorMessage: string | null = null;
 
   onLogin() {
-    if (this.loginForm.valid) {
-      const {email, password} = this.loginForm.value;
-
-      this.auth.login(email, password).subscribe(success => {
-        console.log('¿Login exitoso?', success);
-        if (success) {
-          this.router.navigateByUrl('/playerlist');
-          console.log('Login con:', email, password);
-        } else {
-          alert('Email o contraseña incorrectos');
-        }
-      });
-    }
-  }
-
-  resetApp() {
-    localStorage.clear();
-    console.log('localStorage reseteado');
+    const form = this.loginForm.getRawValue();
+    this.authService.login(form.email, form.password).
+    subscribe({
+      next: () => {
+        this.router.navigateByUrl('/playerlist');
+      },
+      error: (err) => {
+        this.errorMessage = err.code;
+      }
+    });
   }
 }

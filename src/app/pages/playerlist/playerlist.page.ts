@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 import { IonContent,
   IonHeader,
   IonTitle,
@@ -18,7 +20,6 @@ import { IonContent,
   IonInfiniteScroll,
   IonInfiniteScrollContent
 } from '@ionic/angular/standalone';
-import { Player } from 'src/app/models/player.model';
 
 @Component({
   selector: 'app-playerlist',
@@ -43,21 +44,29 @@ import { Player } from 'src/app/models/player.model';
     IonInfiniteScrollContent]
 })
 export class Playerlist implements OnInit {
-  players: Player[] = [];
   cursor:number | null = null;
   perPage= 25;
 
-  constructor(public apiService: ApiService) { }
+  constructor(
+    public apiService: ApiService,
+    private router: Router,
+    private authService: AuthService,
+  ) { }
 
   ngOnInit() {
+    this.apiService.players = [];
+    this.cursor = null;
     this.loadPlayers();
   }
 
   loadPlayers(event?: CustomEvent) {
     this.apiService.getPlayers(this.cursor, this.perPage).subscribe({
       next: ({players, nextCursor}) => {
-        this.players = [...this.players, ...players];
+        this.apiService.players = [...this.apiService.players, ...players];
         this.cursor = nextCursor;
+
+        this.apiService.storePlayersInFirestore(players)
+        .catch(err => console.error('Error almacenando players en Firestore', err));
 
         if (event) {
           const infiniteScroll = event.target as HTMLIonInfiniteScrollElement;
@@ -73,5 +82,14 @@ export class Playerlist implements OnInit {
 
   loadMore(event: CustomEvent) {
     this.loadPlayers(event);
+  }
+
+  goToDetails(playerId: number) {
+    this.router.navigate(['/playerdetails', playerId]);
+  }
+
+  logOut(): void {
+    this.authService.logOut();
+    this.router.navigateByUrl('/login');
   }
 }

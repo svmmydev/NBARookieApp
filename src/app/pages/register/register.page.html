@@ -7,24 +7,28 @@
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="onRegister()" [formGroup]="registerForm" class="ion-padding">
+  <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="ion-padding">
     <ion-item>
-      <ion-input label="User:" label-placement="floating" formControlName="name"></ion-input>
+      <ion-input type="email" label="Username:" label-placement="floating" formControlName="userName"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input label="Email:" label-placement="floating" formControlName="email"></ion-input>
+      <ion-input type="email" label="Email:" label-placement="floating" formControlName="email"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input label="Password:" label-placement="floating" type="password" formControlName="password"></ion-input>
+      <ion-input type="password" label="Password:" label-placement="floating" formControlName="password"></ion-input>
     </ion-item>
 
-    <ion-item>
-      <ion-input label="Confirm Password:" label-placement="floating" type="password" formControlName="confirmPassword"></ion-input>
-    </ion-item>
+    <!-- <ion-item>
+      <ion-input  type="password" label="Confirm Password:" label-placement="floating" formControlName="confirmPassword"></ion-input>
+    </ion-item> -->
 
-    <ion-button expand="full" type="submit" [disabled]="registerForm.invalid" class="ion-padding">
+    @if (errorMessage) {
+      <div>{{ errorMessage }}</div>
+    }
+
+    <ion-button expand="block" type="submit" class="ion-padding">
       Registrarse
     </ion-button>
     <p class="ion-text-center">
