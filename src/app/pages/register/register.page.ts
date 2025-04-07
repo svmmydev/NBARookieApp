@@ -27,7 +27,6 @@ export class RegisterPage {
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient,
     private router: Router,
     private authService: AuthService
   ) {}

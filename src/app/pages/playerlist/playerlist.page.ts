@@ -50,10 +50,12 @@ export class Playerlist implements OnInit {
   constructor(
     public apiService: ApiService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
   ) { }
 
   ngOnInit() {
+    this.apiService.players = [];
+    this.cursor = null;
     this.loadPlayers();
   }
 
@@ -62,6 +64,9 @@ export class Playerlist implements OnInit {
       next: ({players, nextCursor}) => {
         this.apiService.players = [...this.apiService.players, ...players];
         this.cursor = nextCursor;
+
+        this.apiService.storePlayersInFirestore(players)
+        .catch(err => console.error('Error almacenando players en Firestore', err));
 
         if (event) {
           const infiniteScroll = event.target as HTMLIonInfiniteScrollElement;
