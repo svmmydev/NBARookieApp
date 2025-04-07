@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { CameraService } from 'src/app/services/camera.service';
 import { IonContent,
   IonHeader,
   IonTitle,
@@ -47,12 +48,14 @@ import { Subscription } from 'rxjs';
 export class Playerlist implements OnInit {
   cursor:number | null = null;
   perPage= 25;
-  private authSub: Subscription | undefined;
+  authSub: Subscription | undefined;
+  imageUrl: string | undefined;
 
   constructor(
     public apiService: ApiService,
     private router: Router,
     private authService: AuthService,
+    private cameraService: CameraService
   ) { }
 
   ngOnInit() {
@@ -99,5 +102,9 @@ export class Playerlist implements OnInit {
   logOut(): void {
     this.authService.logOut();
     this.router.navigateByUrl('/login');
+  }
+
+  async takePicture() {
+    this.imageUrl = await this.cameraService.takePicture();
   }
 }

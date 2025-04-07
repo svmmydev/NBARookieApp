@@ -4,7 +4,7 @@
   <ion-toolbar>
     <ion-title>Player List</ion-title>
     <ion-buttons slot="end">
-      <ion-button fill="clear">
+      <ion-button (click)="takePicture()">
         <ion-icon name="camera" slot="icon-only"></ion-icon>
       </ion-button>
       <ion-button (click)="logOut()">
