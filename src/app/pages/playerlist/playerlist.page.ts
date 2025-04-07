@@ -20,6 +20,7 @@ import { IonContent,
   IonInfiniteScroll,
   IonInfiniteScrollContent
 } from '@ionic/angular/standalone';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-playerlist',
@@ -46,6 +47,7 @@ import { IonContent,
 export class Playerlist implements OnInit {
   cursor:number | null = null;
   perPage= 25;
+  private authSub: Subscription | undefined;
 
   constructor(
     public apiService: ApiService,
@@ -54,9 +56,15 @@ export class Playerlist implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.apiService.players = [];
-    this.cursor = null;
-    this.loadPlayers();
+    this.authSub = this.authService.user$.subscribe(user => {
+      if (!user) {
+        this.router.navigateByUrl('login');
+      } else {
+        this.apiService.players = [];
+        this.cursor = null;
+        this.loadPlayers();
+      }
+    });
   }
 
   loadPlayers(event?: CustomEvent) {

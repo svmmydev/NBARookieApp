@@ -5,7 +5,6 @@ import { IonContent, IonItem, IonInput, IonButton, IonHeader, IonToolbar, IonTit
 import { RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
