@@ -1,57 +1,40 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-
-export interface User {
-  name: string;
-  email: string;
-  password: string;
-}
+import { Injectable, signal } from '@angular/core';
+import { from, Observable } from 'rxjs';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, user } from "@angular/fire/auth";
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
-  private users: User[] = [];
-  private currentUser$ = new BehaviorSubject<User | null>(null);
+  user$ = user(this.firebaseAuth);
+  currentUserSig = signal<User | null | undefined>(undefined)
   
-  constructor() { 
-    const savedUser = localStorage.getItem('loggedUser');
-    if (savedUser) this.currentUser$.next(JSON.parse(savedUser));
+  constructor(private firebaseAuth: Auth) { }
 
-    const savedUsers = localStorage.getItem('registeredUsers');
-    if (savedUsers) this.users = JSON.parse(savedUsers);
+  login(email: string, password: string): Observable<void> {
+    const promise = signInWithEmailAndPassword(
+      this.firebaseAuth,
+      email,
+      password
+    ).then(() => {});
+
+    return from(promise)
   }
 
-  register(user: User): Observable<boolean> {
-    const exists = this.users.find(u => u.email === user.email);
-    if (exists) return of(false);
-    
-    this.users.push(user);
-    localStorage.setItem('registeredUsers', JSON.stringify(this.users));
-    return of(true);
+  register(email: string, username: string, password: string): Observable<void> {
+    const promise = createUserWithEmailAndPassword(
+      this.firebaseAuth,
+      email,
+      password
+    ).then(response => updateProfile(response.user, {displayName: username}));
+
+    return from(promise);
   }
 
-  login(email: string, password: string): Observable<boolean> {
-    const user = this.users.find(u => u.email === email && u.password === password);
-    if (!user) return of(false);
-
-    localStorage.setItem('loggedUser', JSON.stringify(user));
-    this.currentUser$.next(user);
-    return of(true);
-  }
-
-  logout(): void {
-    localStorage.removeItem('loggedUser');
-    this.currentUser$.next(null);
-  }
-
-  isLoggedIn(): boolean {
-    return this.currentUser$.value !== null;
-  }
-
-  getCurrentUser(): Observable<User | null> {
-    return this.currentUser$.asObservable();
+  logOut(): Observable<void> {
+    const promise = signOut(this.firebaseAuth);
+    return from(promise);
   }
 }
 

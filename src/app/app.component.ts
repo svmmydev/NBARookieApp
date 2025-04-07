@@ -1,31 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { camera, shareSocial, starOutline } from 'ionicons/icons';
-import { IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonButton,
-  IonList,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-  IonCardContent,
-  IonIcon,
-  IonButtons
-} from '@ionic/angular/standalone';
+import { camera, shareSocial, starOutline, logOutOutline, star } from 'ionicons/icons';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [IonApp, IonRouterOutlet, IonButtons, IonIcon, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard, IonList, IonButton, IonContent, IonHeader, IonTitle, IonToolbar],
+  imports: [IonApp, IonRouterOutlet],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-  constructor() {
-    addIcons({starOutline, camera, shareSocial});
+  constructor(private authService: AuthService) {
+    addIcons({star, starOutline, camera, shareSocial, logOutOutline});
   }
 
+  ngOnInit(): void {
+      this.authService.user$.subscribe((user) => {
+        if (user) {
+          this.authService.currentUserSig.set({
+            uid: user.uid!,
+            email: user.email!,
+            username: user.displayName!
+          });
+        } else {
+          this.authService.currentUserSig.set(null);
+        }
+        console.log(this.authService.currentUserSig())
+      });
+  }
 }
