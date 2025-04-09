@@ -1,35 +1,44 @@
 <ion-header>
   <ion-toolbar>
-  </ion-toolbar>
-  <ion-toolbar>
     @if (player) {
       <ion-title>{{ player.name }} {{ player.surName }}</ion-title>
       <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon name="share-social" slot="icon-only"></ion-icon>
-      </ion-button>
-      <ion-button (click)="toggleFavorite(player)">
-        <ion-icon [name]="isFavorite(player) ? 'star' : 'star-outline'" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  } @else {
-    <ion-title>N/A</ion-title>
-  }
+        <ion-button (click)="shareService.sharePlayer(player)">
+          <ion-icon name="share-social" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-button (click)="toggleFavorite(player)">
+          <ion-icon [name]="isFavorite(player) ? 'star' : 'star-outline'" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    } @else {
+      <ion-title>N/A</ion-title>
+    }
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [scrollY]="false">
   <div>
     <ion-card>
       @if (player) {
         <ion-card-content>
-          <p>Equipo: {{ player.team }}</p>
-          <p>Altura: {{ player.height }}</p>
-          <p>Peso: {{ player.weight }}</p>
-          <br>
-          <p>País: {{ player.country }}</p>
-          <p>Dorsal: {{ player.number }}</p>
-          <p>Posición: {{ player.position }}</p>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12" sizeMd="6">
+                <strong>Equipo:</strong> {{ player.team }}
+              </ion-col>
+              <ion-col size="12" sizeMd="6">
+                <strong>Altura:</strong> {{ player.height }}
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12" sizeMd="6">
+                <strong>Peso:</strong> {{ player.weight }}
+              </ion-col>
+              <ion-col size="12" sizeMd="6">
+                <strong>País:</strong> {{ player.country }}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-card-content>
       } @else {
         <ion-card-content>No se ha podido recuperar el jugador.</ion-card-content>

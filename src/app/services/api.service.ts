@@ -4,6 +4,7 @@ import { Player } from '../models/player.model';
 import { map } from 'rxjs';
 import { mapApiPlayerToPlayer } from '../mappers/player.mapper';
 import { doc, Firestore, writeBatch } from '@angular/fire/firestore';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,8 @@ import { doc, Firestore, writeBatch } from '@angular/fire/firestore';
 export class ApiService {
   players: Player[] = [];
   
-  readonly API_URL = 'https://api.balldontlie.io/v1/players';
-  readonly API_AUTH_TOKEN = '1b4f8895-a5dc-44a2-8e67-17b56727328f';
+  readonly API_URL = environment.apiUrl;
+  readonly API_AUTH_TOKEN = environment.apiAuthToken;
   
   constructor(
     private http: HttpClient,
