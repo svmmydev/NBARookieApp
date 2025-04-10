@@ -1,10 +1,8 @@
 <ion-header>
   <ion-toolbar>
-  </ion-toolbar>
-  <ion-toolbar>
     <ion-title>Player List</ion-title>
     <ion-buttons slot="end">
-      <ion-button fill="clear">
+      <ion-button (click)="takePicture()">
         <ion-icon name="camera" slot="icon-only"></ion-icon>
       </ion-button>
       <ion-button (click)="logOut()">
@@ -17,7 +15,7 @@
 <ion-content>
   <ion-list>
     @for (player of apiService.players; track player.id) {
-      <ion-card (click)="goToDetails(player.id)">
+      <ion-card (click)="goToDetails(player.id)" class="ion-margin">
         <ion-card-header>
           <div class="card-header-content">
             <div>
@@ -25,21 +23,36 @@
               <ion-card-subtitle>{{ player.surName }}</ion-card-subtitle>
             </div>
             <ion-buttons>
-              <ion-button>
+              <ion-button (click)="shareService.sharePlayer(player); $event.stopPropagation()">
                 <ion-icon name="share-social" slot="icon-only"></ion-icon>
               </ion-button>
             </ion-buttons>
           </div>
         </ion-card-header>
         <ion-card-content>
-          <p>Equipo: {{ player.team }}</p>
-          <p>Altura: {{ player.height }}</p>
-          <p>Peso: {{ player.weight }}</p>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12">
+                <strong>Equipo:</strong> {{ player.team }}
+              </ion-col>
+              <ion-col size="12">
+                <strong>Altura:</strong> {{ player.height }}
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12">
+                <strong>Peso:</strong> {{ player.weight }}
+              </ion-col>
+              <ion-col size="12">
+                <strong>País:</strong> {{ player.country }}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-card-content>
       </ion-card>
     }
   </ion-list>
-  <ion-infinite-scroll threshold="1px" (ionInfinite)="loadMore($event)">
+  <ion-infinite-scroll threshold="300px" (ionInfinite)="loadMore($event)">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
       loadingText="Loading players...">
@@ -47,3 +60,8 @@
   </ion-infinite-scroll>
 </ion-content>
 
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>© NBA API - Sammy</ion-title>
+  </ion-toolbar>
+</ion-footer>
