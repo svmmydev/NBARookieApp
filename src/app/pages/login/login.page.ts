@@ -42,7 +42,7 @@ export class LoginPage {
     this.authService.login(form.email, form.password).
     subscribe({
       next: () => {
-        this.router.navigateByUrl('/playerlist');
+        this.router.navigate(['/playerlist'], { queryParams: { fromLogin: true }});
       },
       error: (err) => {
         this.errorMessage = err.code;

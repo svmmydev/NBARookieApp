@@ -1,12 +1,10 @@
 <ion-header>
   <ion-toolbar>
-  </ion-toolbar>
-  <ion-toolbar>
     <ion-title>Login</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [scrollY]="false">
   <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="ion-padding">
     <ion-item>
       <ion-input label="Email:" label-placement="floating" formControlName="email"></ion-input>

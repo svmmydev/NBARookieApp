@@ -11,8 +11,10 @@ export const environment = {
     storageBucket: "nbarookieapp-fad2e.firebasestorage.app",
     messagingSenderId: "133109009732",
     appId: "1:133109009732:web:b55b7d54f5095bd6b0db11",
-    measurementId: "G-ZMZ16YJQM4"
-  }
+    measurementId: "G-ZMZ16YJQM4",
+  },
+  apiUrl: 'https://api.balldontlie.io/v1/players',
+  apiAuthToken: '1b4f8895-a5dc-44a2-8e67-17b56727328f'
 };
 
 /*
