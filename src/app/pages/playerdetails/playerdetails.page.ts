@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonGrid, IonToolbar, IonCard, IonButtons, IonButton, IonIcon, IonCardContent, IonRow, IonCol, IonList, IonItem, IonLabel, IonNote } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonGrid, IonToolbar, IonCard, IonButtons, IonButton, IonIcon, IonCardContent, IonRow, IonCol, IonList, IonItem, IonLabel, IonNote, IonBackButton } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { Player } from 'src/app/models/player.model';
@@ -12,7 +12,7 @@ import { FavoriteService } from 'src/app/services/favorite.service';
   selector: 'app-playerdetails',
   templateUrl: './playerdetails.page.html',
   styleUrls: ['./playerdetails.page.scss'],
-  imports: [IonCol, IonRow, IonCardContent, IonGrid, IonIcon, IonButton, IonButtons, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonBackButton, IonCol, IonRow, IonCardContent, IonGrid, IonIcon, IonButton, IonButtons, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
 export class PlayerdetailsPage implements OnInit {
   player?: Player;

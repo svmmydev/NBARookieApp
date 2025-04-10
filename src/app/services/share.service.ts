@@ -17,7 +17,9 @@ export class ShareService {
               `Equipo: ${player.team}\n` +
               `Altura: ${player.height} M\n` +
               `Peso: ${player.weight} KG\n` +
-              `País: ${player.country}\n`,
+              `País: ${player.country} KG\n` +
+              `Dorsal: ${player.number} KG\n` +
+              `Posición: ${player.position}\n`,
         dialogTitle: 'Compartir jugador',
       });
     } catch (error) {
