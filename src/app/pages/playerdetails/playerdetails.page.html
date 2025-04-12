@@ -1,16 +1,16 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar class="header">
     @if (player) {
       <ion-buttons slot="start">
-        <ion-back-button default-href="#"></ion-back-button>
+        <ion-back-button default-href="#" color="danger"></ion-back-button>
       </ion-buttons>
-      <ion-title>{{ player.name }} {{ player.surName }}</ion-title>
+      <ion-title class="header-tittle">{{ player.name }} {{ player.surName }}</ion-title>
       <ion-buttons slot="end">
         <ion-button (click)="shareService.sharePlayer(player)">
-          <ion-icon name="share-social" slot="icon-only"></ion-icon>
+          <ion-icon name="share-social" slot="icon-only" color="danger"></ion-icon>
         </ion-button>
         <ion-button (click)="toggleFavorite(player)">
-          <ion-icon [name]="isFavorite(player) ? 'star' : 'star-outline'" slot="icon-only"></ion-icon>
+          <ion-icon [name]="isFavorite(player) ? 'star' : 'star-outline'" slot="icon-only" color="warning"></ion-icon>
         </ion-button>
       </ion-buttons>
     } @else {
@@ -19,8 +19,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [scrollY]="false">
-  <div>
+<ion-content [scrollY]="false" class="nba-gradient" fullscreen="true">
+  <div class="details">
     <ion-card>
       @if (player) {
         <ion-card-content>
@@ -53,5 +53,6 @@
         <ion-card-content>No se ha podido recuperar el jugador.</ion-card-content>
       }
     </ion-card>
+    <ion-img src="../../../assets/images/nba-logo.png" alt="NBA Logo"></ion-img>
   </div>
 </ion-content>

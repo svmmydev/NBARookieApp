@@ -1,0 +1,59 @@
+.md ion-toolbar {
+    --background: #000000d8;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    height: 60px;
+}
+  
+.header-tittle {
+    font-size: x-large;
+}
+  
+ion-header {
+    text-align: center;
+}
+
+.nba-gradient {
+    --background: linear-gradient(to bottom right, 
+    #ca2222 0%, 
+    #810f0f 5.33%, 
+    #b6b6b6 5.33%, 
+    #ffffff 10.66%, 
+    #0f8dbe 10.66%, 
+    #092549 100%);
+    height: 100%;
+    width: 100%;
+}
+
+ion-img {
+    width: 100%;
+    max-width: 150px;
+    margin-bottom: 20px;
+}
+
+.details {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+ion-card {
+    --background: #000000ad;
+    --color: #ffffff;
+    padding-left: 10px;
+    text-align: center;
+}
+  
+ion-card-title {
+    --color: #2ab2db;
+    font-weight: bold;
+    text-align: center;
+}
+  
+ion-card-subtitle {
+    --color: #d1fff8;
+}

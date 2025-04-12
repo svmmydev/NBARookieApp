@@ -27,7 +27,11 @@ import { ShareService } from 'src/app/services/share.service';
   selector: 'app-playerlist',
   templateUrl: './playerlist.page.html',
   styleUrls: ['./playerlist.page.scss'],
-  imports: [IonFooter, IonCol, IonRow, IonGrid, IonButtons,
+  imports: [
+    IonCol, 
+    IonRow, 
+    IonGrid, 
+    IonButtons,
     IonIcon,
     IonCardContent,
     IonCardSubtitle,
