@@ -10,7 +10,6 @@ import { IonContent,
   IonTitle,
   IonToolbar,
   IonButton,
-  IonList,
   IonCard,
   IonCardHeader,
   IonCardTitle,
@@ -19,7 +18,7 @@ import { IonContent,
   IonIcon,
   IonButtons,
   IonInfiniteScroll,
-  IonInfiniteScrollContent, IonGrid, IonRow, IonCol, IonFooter, IonRefresher, IonRefresherContent } from '@ionic/angular/standalone';
+  IonInfiniteScrollContent, IonGrid, IonRow, IonCol, IonFooter } from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
 import { Player } from 'src/app/models/player.model';
 import { ShareService } from 'src/app/services/share.service';
@@ -28,14 +27,17 @@ import { ShareService } from 'src/app/services/share.service';
   selector: 'app-playerlist',
   templateUrl: './playerlist.page.html',
   styleUrls: ['./playerlist.page.scss'],
-  imports: [IonRefresherContent, IonRefresher, IonFooter, IonCol, IonRow, IonGrid, IonButtons,
+  imports: [
+    IonCol, 
+    IonRow, 
+    IonGrid, 
+    IonButtons,
     IonIcon,
     IonCardContent,
     IonCardSubtitle,
     IonCardTitle,
     IonCardHeader,
     IonCard,
-    IonList,
     IonButton,
     IonContent,
     IonHeader,
@@ -133,7 +135,6 @@ export class Playerlist implements OnInit {
 
   logOut(): void {
     this.authService.logOut();
-    this.router.navigateByUrl('/login');
   }
 
   async takePicture() {

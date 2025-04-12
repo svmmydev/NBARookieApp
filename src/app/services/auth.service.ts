@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { NavController } from '@ionic/angular'
 import { from, Observable } from 'rxjs';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, user } from "@angular/fire/auth";
 import { User } from '../models/user.model';
@@ -10,7 +11,10 @@ export class AuthService {
   user$ = user(this.firebaseAuth);
   currentUserSig = signal<User | null | undefined>(undefined)
   
-  constructor(private firebaseAuth: Auth) { }
+  constructor(
+    private firebaseAuth: Auth,
+    private navCtrl: NavController
+  ) { }
 
   login(email: string, password: string): Observable<void> {
     const promise = signInWithEmailAndPassword(
@@ -33,7 +37,12 @@ export class AuthService {
   }
 
   logOut(): Observable<void> {
-    const promise = signOut(this.firebaseAuth);
+    const promise = signOut(this.firebaseAuth).then(() => {
+      this.navCtrl.navigateRoot('/login');
+    });
+
+    this.currentUserSig.set(null);
+
     return from(promise);
   }
 }
