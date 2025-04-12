@@ -1,7 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
-import { IonContent, IonItem, IonInput, IonButton, IonHeader, IonToolbar, IonTitle} from '@ionic/angular/standalone';
+import { IonContent, IonItem, IonInput, IonButton, IonToolbar, IonTitle, IonFooter, IonImg } from '@ionic/angular/standalone';
 import { RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
@@ -10,16 +10,15 @@ import { Router } from '@angular/router';
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-  imports: [CommonModule,
+  imports: [IonImg, IonFooter, CommonModule,
     ReactiveFormsModule,
     RouterModule,
     IonContent,
     IonItem,
     IonInput,
     IonButton,
-    IonHeader,
     IonToolbar,
-    IonTitle
+    IonTitle,
   ]
 })
 export class LoginPage {
@@ -29,6 +28,11 @@ export class LoginPage {
     private router: Router,
     private authService: AuthService
   ) {}
+
+  ionViewWillEnter() {
+    this.loginForm.reset();
+    this.errorMessage = null;
+  }
 
   loginForm = this.fb.nonNullable.group({
     email: ['', Validators.required],

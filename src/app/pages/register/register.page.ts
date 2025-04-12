@@ -1,16 +1,17 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { IonContent, IonItem, IonInput, IonButton, IonHeader, IonToolbar, IonTitle} from '@ionic/angular/standalone';
-import { HttpClient } from '@angular/common/http';
+import { IonContent, IonItem, IonInput, IonButton, IonToolbar, IonTitle, IonFooter, IonImg, IonText } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
-  imports: [
+  imports: [ 
+    IonImg,
+    IonFooter, 
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
@@ -18,7 +19,6 @@ import { AuthService } from 'src/app/services/auth.service';
     IonItem,
     IonInput,
     IonButton,
-    IonHeader,
     IonToolbar,
     IonTitle
   ]
@@ -31,18 +31,36 @@ export class RegisterPage {
     private authService: AuthService
   ) {}
 
-  registerForm = this.fb.nonNullable.group({
+  registerForm = this.fb.group({
     userName: ['', Validators.required],
-    email: ['', Validators.required],
-    password: ['', Validators.required]
-  });
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', Validators.required],
+    confirmPassword: ['', Validators.required]
+  }, { validators: this.matchPasswords });
 
   errorMessage: string | null = null;
 
   onRegister() {
-    const form = this.registerForm.getRawValue();
-    this.authService.register(form.email, form.userName, form.password).
-    subscribe({
+    this.errorMessage = null;
+
+    if (this.registerForm.invalid) {
+      if (this.registerForm.errors?.['passwordsMismatch']) {
+        this.errorMessage = 'Las contraseñas no coinciden';
+      } else {
+        this.errorMessage = 'Rellena todos los campos';
+      }
+      this.registerForm.markAllAsTouched();
+      return;
+    }
+
+    const form = this.registerForm.getRawValue() as {
+      email: string;
+      userName: string;
+      password: string;
+    };
+
+    this.authService.register(form.email, form.userName, form.password)
+    .subscribe({
       next: () => {
         this.router.navigateByUrl('/');
       },
@@ -50,5 +68,11 @@ export class RegisterPage {
         this.errorMessage = err.code;
       }
     });
+  }
+
+  private matchPasswords(group: any) {
+    const password = group.get('password')?.value;
+    const confirm = group.get('confirmPassword')?.value;
+    return password === confirm ? null : { passwordsMismatch: true };
   }
 }
