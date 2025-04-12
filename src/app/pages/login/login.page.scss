@@ -22,10 +22,6 @@ ion-header {
     text-align: center;
 }
 
-ion-footer {
-    text-align: center;
-}
-
 .login {
     width: 100%;
     max-width: 400px;
@@ -50,12 +46,21 @@ ion-img {
    margin-bottom: 12px;
 }
 
+.md ion-toolbar {
+    --background: #0000007c;
+    height: 50px;
+}
+
 ion-toolbar {
     --background: #181818;
     --color: white;
-    height: 50px;
     --border-color: white;
     --border-width: 2px 0 0;
+}
+
+.footer {
+    font-size: medium;
+    text-align: center;
 }
 
 ion-button {
@@ -77,12 +82,8 @@ ion-button {
     margin-left: 10px;
 }
 
-.footer {
-    font-size: medium;
-}
-
 .nba-gradient {
-    background: linear-gradient(to bottom right, 
+    --background: linear-gradient(to bottom right, 
     #ca2222 0%, 
     #810f0f 5.33%, 
     #b6b6b6 5.33%, 
