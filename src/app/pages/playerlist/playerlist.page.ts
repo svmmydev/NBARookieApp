@@ -51,11 +51,12 @@ import { ShareService } from 'src/app/services/share.service';
 export class Playerlist implements OnInit {
   @ViewChild(IonContent, { static: false }) content?: IonContent;
 
-  firstLoad = false;
-  cursor:number | null = null;
-  perPage= 25;
-  authSub: Subscription | undefined;
-  imageUrl: string | undefined;
+  firstLoad = false; // First load
+  cursor:number | null = null; // Cursor for pagination (used with external API)
+  perPage= 25;  // Number of players to load per page
+  authSub: Subscription | undefined; // Subscription to AuthService to handle user state
+  imageUrl: string | undefined; // Image URL returned from CameraService
+
 
   constructor(
     public apiService: ApiService,
@@ -66,6 +67,12 @@ export class Playerlist implements OnInit {
     public shareService: ShareService
   ) { }
 
+
+  /**
+  * On component initialization, subscribes to the current user.
+  * If user is not authenticated, redirects to /login.
+  * If authenticated, resets the players list and fetches the first batch.
+  */
   ngOnInit() {
     this.authSub = this.authService.user$.subscribe(user => {
       if (!user) {
@@ -78,11 +85,17 @@ export class Playerlist implements OnInit {
     });
   }
 
+
+  /**
+  * Ionic lifecycle hook – checks if the page was reached from login to scroll to top.
+  */
   ionViewWillEnter() {
     const queryParams = this.activatedRoute.snapshot.queryParams;
 
     if (queryParams['fromLogin'] === 'true') {
       this.firstLoad = true;
+
+      // Remove the query param after use
       this.router.navigate([], {
         relativeTo: this.activatedRoute,
         queryParams: { fromLogin: null },
@@ -93,6 +106,10 @@ export class Playerlist implements OnInit {
     }
   }
 
+
+  /**
+  * After the view is fully entered, scrolls to the top if just logged in.
+  */
   ionViewDidEnter() {
     if (this.firstLoad) {
       this.content?.scrollToTop(300);
@@ -100,6 +117,12 @@ export class Playerlist implements OnInit {
     }
   }
 
+
+  /**
+  * Loads players from the API using a cursor-based pagination system.
+  * Prevents duplicates and stores new players in Firestore.
+  * Handles infinite scroll logic.
+  */
   loadPlayers(event?: CustomEvent) {
     this.apiService.getPlayers(this.cursor, this.perPage).subscribe({
       next: ({ players, nextCursor }) => {
@@ -125,22 +148,42 @@ export class Playerlist implements OnInit {
     });
   }
 
+
+  /**
+  * Triggered by the Infinite Scroll component to load more data.
+  */
   loadMore(event: CustomEvent) {
     this.loadPlayers(event);
   }
 
+
+  /**
+  * Navigates to the details page for a specific player.
+  */
   goToDetails(playerId: number) {
     this.router.navigate(['/playerdetails', playerId]);
   }
 
+
+  /**
+  * Logs out the current user using AuthService.
+  */
   logOut(): void {
     this.authService.logOut();
   }
 
+
+  /**
+  * Opens the camera and stores the returned image URL.
+  */
   async takePicture() {
     this.imageUrl = await this.cameraService.takePicture();
   }
 
+
+  /**
+  * Unsubscribes from the AuthService when component is destroyed.
+  */
   ngOnDestroy() {
     if (this.authSub) {
       this.authSub.unsubscribe();
