@@ -13,8 +13,8 @@ $RECYCLE.BIN/
 log.txt
 
 # Environments protected files
-src/environments/environmet.ts
-src/environments/environmet.prod.ts
+src/environments/environment.ts
+src/environments/environment.prod.ts
 
 /.sourcemaps
 /.versions
